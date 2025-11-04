@@ -34,6 +34,142 @@ Azure Functions上で動作する高度なエージェンティックRAGシス�
 | `/api/health` | GET | ヘルスチェック |
 | `/api/info` | GET | API情報 |
 
+## 🤖 エージェントの仕組み - なぜ「エージェンティック」なのか？
+
+### 従来のRAG vs Router Agent
+
+#### ❌ 従来のシンプルRAG（非エージェント的）
+```
+質問 → ベクトル検索 → LLM生成 → 回答
+```
+- すべての質問に同じアプローチ
+- 質問の種類を考慮しない
+- ツールの選択肢がない
+
+#### ✅ Router Agent（真のエージェント）
+```
+質問
+  ↓
+【認知】意図を分類（LLM推論）
+  ↓
+【計画】最適なツールを選択
+  ↓
+【実行】複数ツールを協調実行
+  ↓
+【統合】結果をまとめて最終回答
+```
+
+### 3層アーキテクチャ
+
+```
+┌─────────────────────────────────────────┐
+│  🧠 認知層 (Cognitive Layer)              │
+│  IntentClassifier                        │
+│  - 質問の意図を7種類に自動分類             │
+│  - 事実検索/意味検索/要約/比較/分析...     │
+└─────────────────────────────────────────┘
+               ↓
+┌─────────────────────────────────────────┐
+│  ⚙️ 実行層 (Execution Layer)              │
+│  RouterAgent                             │
+│  - 意図に基づいてツールを選択              │
+│  - 実行戦略を決定                         │
+│  - 結果を統合                            │
+└─────────────────────────────────────────┘
+               ↓
+┌─────────────────────────────────────────┐
+│  🛠️ ツール層 (Tool Layer)                │
+│  - SemanticSearchTool (ベクトル検索)      │
+│  - KeywordSearchTool (Azure AI Search)  │
+│  - SummarizationTool (要約)             │
+│  - ComparisonTool (比較分析)            │
+└─────────────────────────────────────────┘
+```
+
+### 実際の動作例
+
+**質問:** 「GPT-4とGPT-3.5の違いは？」
+
+```
+Step 1: 意図分類
+  → LLMで分析: "comparison"（比較質問）
+  
+Step 2: ツール選択
+  → 意図="comparison" → ComparisonTool を選択
+  
+Step 3: ツール実行
+  → ComparisonTool が実行:
+     a) 両方に関する情報を検索
+     b) LLMで比較分析
+     c) 違いを構造化
+  
+Step 4: 結果統合
+  → 比較結果をユーザーに分かりやすく整形
+  
+最終回答:
+  {
+    "intent": "comparison",
+    "tools_used": ["comparison"],
+    "answer": "GPT-4とGPT-3.5の主な違いは..."
+  }
+```
+
+### なぜこれが「エージェンティック」なのか？
+
+#### 1. 🧠 **自律的判断**
+```python
+# 人間が指定するのは質問だけ
+query = "違いは？"
+
+# エージェントが自律的に：
+# ✓ 意図を理解（comparison）
+# ✓ ツールを選択（ComparisonTool）
+# ✓ 実行戦略を決定
+# ✓ 結果を統合
+```
+
+#### 2. 🎯 **目標志向**
+質問に最適に答えるという目標のために、自分で戦略を立てる
+
+#### 3. 🔄 **反応性**
+質問の種類によって動作を変える
+- 事実検索 → キーワード検索
+- 意味検索 → ベクトル検索
+- 比較 → 比較分析ツール
+- 要約 → 検索+要約
+
+#### 4. 🤝 **ツール協調**
+複数のツールを組み合わせて使用
+```python
+intent_to_tools = {
+    "factual_search": ["keyword_search", "semantic_search"],  # 2つ併用
+    "summarization": ["semantic_search", "summarization"],    # 順次実行
+    "comparison": ["comparison"],                             # 専門ツール
+}
+```
+
+### エージェント動作ログ
+
+実際のログ出力:
+```bash
+=== Router Agent Started ===
+Query: GPT-4とGPT-3.5の違いは？
+Classified intent: comparison        # ← 自律的に判断
+Selected tools: ['comparison']       # ← 戦略を選択
+Executing tool: comparison           # ← 実行
+  → Searching documents...           # ← 情報収集
+  → Found 5 relevant documents       # ← 観察
+  → Analyzing with LLM...            # ← 分析
+  → Comparison complete              # ← 完了
+=== Router Agent Completed ===
+```
+
+### 詳細ドキュメント
+
+- 📘 [エージェント機能分解の詳細](AGENT_ARCHITECTURE.md)
+- 🤖 [Router Agent 完全ガイド](ROUTER_AGENT_GUIDE.md)
+- 📊 [ナレッジ検索パターン比較](KNOWLEDGE_SEARCH_PATTERNS.md)
+
 ## 🚀 クイックスタート
 
 ### 前提条件
