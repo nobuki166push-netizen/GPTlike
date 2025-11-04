@@ -1,12 +1,13 @@
 # GPTlike - エージェンティックRAG on Azure Functions 🤖
 
-Azure Functions上で動作する高度なエージェンティックRAGシステムです。LangChain、Azure OpenAI、Azure AI Searchを活用した、インテリジェントなドキュメント検索と質問応答を提供します。
+Azure Functions上で動作する高度なエージェンティックRAGシステムです。**Microsoft Agent Framework**、Azure OpenAI、Azure AI Searchを活用した、インテリジェントなドキュメント検索と質問応答を提供します。
 
 ## ✨ 主な機能
 
 ### 🎯 エージェンティックRAG
-- **LangChainエージェント**: ツールを自動選択して最適な回答を生成
-- **複数の検索ツール**: ベクトル検索、Azure AI Search、要約機能
+- **Microsoft Agent Framework**: Microsoftの公式エージェントフレームワーク（[GitHub](https://github.com/microsoft/agent-framework)）
+- **OpenAI Function Calling**: ツールを自動選択して最適な回答を生成
+- **複数の検索ツール**: ベクトル検索（FAISS）、Azure AI Search統合
 - **インテリジェントな推論**: コンテキストを理解し、適切な情報を組み合わせて回答
 
 ### 🔌 Azure統合
@@ -350,42 +351,59 @@ curl -X POST https://your-app.azurewebsites.net/api/documents/load \
 
 ### LLMモデルの変更
 
-`agentic_rag.py`でモデルを簡単に変更できます:
+環境変数でモデルを簡単に変更できます:
 
-```python
-self.llm = AzureChatOpenAI(
-    deployment_name="gpt-4o",  # ← ここを変更
-    temperature=0.3,  # 温度調整も可能
-)
+```bash
+# local.settings.json または Azure Portal で設定
+AZURE_OPENAI_DEPLOYMENT_NAME=gpt-4o
+AZURE_OPENAI_EMBEDDING_DEPLOYMENT=text-embedding-3-large
 ```
 
 ### カスタムツールの追加
 
-新しいツールを追加する例:
+`agent_rag.py`に新しいツールを追加する例:
 
 ```python
-def _create_custom_tool(self) -> Tool:
-    def custom_function(query: str) -> str:
+class CustomTool(AgentTool):
+    """カスタムツール"""
+    
+    def __init__(self):
+        super().__init__(
+            name="custom_tool",
+            description="カスタムツールの説明"
+        )
+    
+    def execute(self, query: str) -> str:
         # カスタムロジック
         return "結果"
     
-    return Tool(
-        name="custom_tool",
-        description="カスタムツールの説明",
-        func=custom_function,
-    )
+    def to_function_definition(self) -> Dict[str, Any]:
+        return {
+            "type": "function",
+            "function": {
+                "name": self.name,
+                "description": self.description,
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "クエリ"
+                        }
+                    },
+                    "required": ["query"]
+                }
+            }
+        }
 ```
 
-### プロンプトのカスタマイズ
+### システムプロンプトのカスタマイズ
 
-`agentic_rag.py`の`_create_agent`メソッド内でプロンプトを編集:
+`agent_rag.py`の`_create_agent`メソッド内でプロンプトを編集:
 
 ```python
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "あなたのカスタムシステムプロンプト..."),
-    ("human", "{input}"),
-    MessagesPlaceholder(variable_name="agent_scratchpad"),
-])
+system_prompt = """あなたのカスタムシステムプロンプト...
+"""
 ```
 
 ## 📚 プロジェクト構造
@@ -393,7 +411,7 @@ prompt = ChatPromptTemplate.from_messages([
 ```
 /workspace/
 ├── function_app.py          # Azure Function エンドポイント定義
-├── agentic_rag.py          # エージェンティックRAGの実装
+├── agent_rag.py            # Microsoft Agent FrameworkベースのエージェンティックRAG実装
 ├── host.json               # Azure Functions ランタイム設定
 ├── local.settings.json     # ローカル開発環境設定
 ├── requirements.txt        # Python依存関係
@@ -417,10 +435,10 @@ prompt = ChatPromptTemplate.from_messages([
 └──────┬───────────────┘
        │
        ▼
-┌──────────────────────┐
-│  Agentic RAG Agent   │
-│  (agentic_rag.py)    │
-└──────┬───────────────┘
+┌──────────────────────────────┐
+│  Microsoft Agent Framework    │
+│  (agent_rag.py)              │
+└──────┬───────────────────────┘
        │
        ├─► Azure OpenAI (GPT-4)
        │
@@ -485,11 +503,12 @@ az functionapp config appsettings list \
 
 ## 📖 参考資料
 
+- [Microsoft Agent Framework (GitHub)](https://github.com/microsoft/agent-framework)
 - [Azure Functions Python ガイド](https://learn.microsoft.com/azure/azure-functions/functions-reference-python)
 - [Azure OpenAI Service](https://learn.microsoft.com/azure/ai-services/openai/)
-- [LangChain ドキュメント](https://python.langchain.com/)
 - [Azure AI Search](https://learn.microsoft.com/azure/search/)
 - [FAISS](https://github.com/facebookresearch/faiss)
+- [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)
 
 ## 🤝 コントリビューション
 

@@ -2,7 +2,7 @@ import azure.functions as func
 import logging
 import json
 from datetime import datetime
-from agentic_rag import get_agent
+from agent_rag import get_agent
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
@@ -249,12 +249,12 @@ def info_function(req: func.HttpRequest) -> func.HttpResponse:
                 }
             },
             "features": [
-                "LangChainベースのエージェント",
+                "Microsoft Agent Frameworkベースのエージェント",
+                "OpenAI Function Calling",
                 "Azure OpenAI統合",
                 "Azure AI Search対応",
                 "Azure Blob Storage統合",
-                "ベクトル検索（FAISS）",
-                "ドキュメント要約"
+                "ベクトル検索（FAISS）"
             ]
         }, ensure_ascii=False),
         mimetype="application/json",
