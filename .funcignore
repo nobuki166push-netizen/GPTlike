@@ -1,0 +1,16 @@
+.git*
+.vscode
+__pycache__
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+.python_version
+.gitignore
+.funcignore
+*.md
+.DS_Store
+tests/
+.pytest_cache
