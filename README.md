@@ -55,11 +55,23 @@ Azure OpenAI を使用したチャットライクなWebアプリケーション�
 
 - Node.js 18以上
 - Python 3.11以上
-- Azure OpenAI リソースとAPIキー
+- **Azure OpenAI リソースとAPIキー**（[Azure設定ガイド](./docs/AZURE_SETUP.md)を参照）
 
 または
 
 - Docker と Docker Compose
+
+### ⚠️ 重要: 最初にAzureポータルで設定が必要です
+
+アプリケーションを起動する前に、Azureポータル側でリソースの作成とモデルのデプロイが必要です。
+
+**👉 [Azure ポータル設定ガイド](./docs/AZURE_SETUP.md) を先に確認してください。**
+
+このガイドでは以下の手順を詳しく説明しています：
+1. Azure OpenAI リソースの作成
+2. GPTモデルのデプロイ
+3. APIキーとエンドポイントの取得
+4. コストの見積もりと注意点
 
 ### 1. リポジトリのクローン
 
