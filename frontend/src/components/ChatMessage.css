@@ -1,0 +1,152 @@
+.chat-message {
+  display: flex;
+  gap: 1rem;
+  max-width: 100%;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  background: var(--bg-secondary);
+}
+
+.chat-message.user .message-avatar {
+  background: var(--user-message-bg);
+}
+
+.chat-message.assistant .message-avatar {
+  background: var(--bg-secondary);
+}
+
+.message-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.message-role {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.message-text {
+  background: var(--bg-secondary);
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  color: var(--text-primary);
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.chat-message.user .message-text {
+  background: var(--user-message-bg);
+  color: white;
+}
+
+.chat-message.assistant .message-text {
+  background: var(--assistant-message-bg);
+}
+
+.message-text p {
+  margin: 0;
+}
+
+.message-text p + p {
+  margin-top: 0.75rem;
+}
+
+/* マークダウンスタイル */
+.markdown-content {
+  font-size: 0.95rem;
+}
+
+.markdown-content p {
+  margin: 0 0 0.75rem 0;
+}
+
+.markdown-content p:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-content code {
+  background: var(--bg-input);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+}
+
+.markdown-content pre {
+  background: var(--bg-input);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0.75rem 0;
+}
+
+.markdown-content pre code {
+  background: none;
+  padding: 0;
+}
+
+.markdown-content ul, .markdown-content ol {
+  margin: 0.75rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdown-content li {
+  margin: 0.25rem 0;
+}
+
+.markdown-content h1, .markdown-content h2, .markdown-content h3 {
+  margin: 1rem 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.markdown-content h1 {
+  font-size: 1.5rem;
+}
+
+.markdown-content h2 {
+  font-size: 1.3rem;
+}
+
+.markdown-content h3 {
+  font-size: 1.1rem;
+}
+
+.markdown-content blockquote {
+  border-left: 3px solid var(--border-color);
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+  color: var(--text-secondary);
+}
+
+.markdown-content a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}

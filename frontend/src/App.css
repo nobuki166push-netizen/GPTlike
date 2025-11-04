@@ -1,0 +1,57 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+.app.dark {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2d2d2d;
+  --bg-input: #3a3a3a;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --border-color: #404040;
+  --accent-color: #0078d4;
+  --accent-hover: #106ebe;
+  --user-message-bg: #0078d4;
+  --assistant-message-bg: #2d2d2d;
+}
+
+.app.light {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-input: #ffffff;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border-color: #d0d0d0;
+  --accent-color: #0078d4;
+  --accent-hover: #106ebe;
+  --user-message-bg: #0078d4;
+  --assistant-message-bg: #f0f0f0;
+}
+
+.app-header {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1.5rem 2rem;
+}
+
+.header-content h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--text-primary);
+}
+
+.header-content .subtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+.app-main {
+  flex: 1;
+  overflow: hidden;
+  background: var(--bg-primary);
+}
