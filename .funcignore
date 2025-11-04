@@ -14,3 +14,8 @@ venv/
 .DS_Store
 tests/
 .pytest_cache
+frontend/node_modules/
+frontend/src/
+frontend/*.json
+frontend/*.ts
+frontend/*.html

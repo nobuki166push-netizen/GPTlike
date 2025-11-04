@@ -25,3 +25,9 @@ Thumbs.db
 
 # Azure Functions Core Tools
 .python_packages/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+static/
+*.local

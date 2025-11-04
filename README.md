@@ -2,6 +2,8 @@
 
 Azure Functions上で動作する高度なエージェンティックRAGシステムです。**Microsoft Agent Framework**、Azure OpenAI、Azure AI Searchを活用した、インテリジェントなドキュメント検索と質問応答を提供します。
 
+> 🚀 **すぐに始めたい？** → [クイックスタートガイド](QUICKSTART.md) をご覧ください！
+
 ## ✨ 主な機能
 
 ### 🎯 エージェンティックRAG
@@ -168,11 +170,52 @@ pip install -r requirements.txt
 
 #### ローカルで起動
 
+**バックエンド（Azure Functions）:**
 ```bash
 func start
 ```
 
-## 📖 使用方法
+**フロントエンド（別ターミナル）:**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+- バックエンド: `http://localhost:7071`
+- フロントエンド: `http://localhost:5173`
+
+フロントエンドは自動的にバックエンドのAPIにプロキシします。
+
+## 🎨 UIの使い方
+
+### チャットUI
+
+ブラウザで `http://localhost:5173` を開くと、Microsoft公式サンプルスタイルのチャットUIが表示されます。
+
+#### 基本的な使い方
+
+1. **ドキュメントをロード**: 
+   - 右上の「📤」アイコンをクリック
+   - ドキュメントのテキストを入力（複数の場合は`---`で区切る）
+   - 「ロード」ボタンをクリック
+
+2. **質問する**:
+   - 下部のテキストボックスに質問を入力
+   - 「送信」ボタンをクリック（またはEnterキー）
+
+3. **エージェントの動作を確認**:
+   - エージェントが自動的にツールを選択
+   - 検索結果を基に回答を生成
+
+### システム情報の確認
+
+右上の「システム情報」ボタンをクリックすると：
+- サービス名とバージョン
+- 利用可能な機能一覧
+が表示されます。
+
+## 📖 API使用方法（プログラマティック）
 
 ### チャット（エージェンティックRAG）
 
@@ -288,9 +331,22 @@ az functionapp config appsettings set \
   AZURE_STORAGE_CONTAINER_NAME="documents"
 ```
 
-### 3. デプロイ
+### 3. フロントエンドをビルドしてデプロイ
 
+**簡単な方法（デプロイスクリプト使用）:**
 ```bash
+./deploy.sh gptlike-func-app
+```
+
+**手動デプロイ:**
+```bash
+# フロントエンドをビルド
+cd frontend
+npm install
+npm run build
+cd ..
+
+# Azure Functionsにデプロイ
 func azure functionapp publish gptlike-func-app
 ```
 
@@ -410,15 +466,24 @@ system_prompt = """あなたのカスタムシステムプロンプト...
 
 ```
 /workspace/
-├── function_app.py          # Azure Function エンドポイント定義
-├── agent_rag.py            # Microsoft Agent FrameworkベースのエージェンティックRAG実装
-├── host.json               # Azure Functions ランタイム設定
-├── local.settings.json     # ローカル開発環境設定
-├── requirements.txt        # Python依存関係
-├── .env.template          # 環境変数テンプレート
-├── .funcignore            # デプロイ除外ファイル
-├── .gitignore             # Git除外設定
-└── README.md              # このファイル
+├── function_app.py                # Azure Function エンドポイント定義
+├── agent_rag.py                   # Microsoft Agent FrameworkベースのエージェンティックRAG実装
+├── host.json                      # Azure Functions ランタイム設定
+├── local.settings.json            # ローカル開発環境設定
+├── requirements.txt               # Python依存関係
+├── .env.template                  # 環境変数テンプレート
+├── deploy.sh                      # デプロイスクリプト
+├── staticwebapp.config.json       # 静的Webアプリ設定
+├── frontend/                      # Reactフロントエンド
+│   ├── src/
+│   │   ├── App.tsx               # メインアプリケーション
+│   │   ├── components/
+│   │   │   └── Chat.tsx          # チャットUI
+│   │   ├── api.ts                # APIクライアント
+│   │   └── types.ts              # TypeScript型定義
+│   ├── package.json
+│   └── vite.config.ts
+└── README.md                      # このファイル
 ```
 
 ## 🏗️ アーキテクチャ
