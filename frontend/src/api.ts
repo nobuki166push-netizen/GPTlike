@@ -2,8 +2,35 @@ import { ChatRequest, ChatResponse, DocumentLoadRequest, DocumentLoadResponse, H
 
 const API_BASE_URL = '/api'
 
+// アクセストークンを取得する関数（MSALから取得）
+let getAccessToken: (() => Promise<string | null>) | null = null
+
+export function setAccessTokenGetter(getter: () => Promise<string | null>) {
+  getAccessToken = getter
+}
+
 async function fetchWithError<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, options)
+  // 認証トークンを取得して追加
+  const headers: HeadersInit = {
+    'Content-Type': 'application/json',
+    ...(options?.headers || {}),
+  }
+
+  if (getAccessToken) {
+    try {
+      const token = await getAccessToken()
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+    } catch (error) {
+      console.warn('Failed to get access token:', error)
+    }
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  })
   
   if (!response.ok) {
     const errorData = await response.json().catch(() => ({ error: 'Unknown error' }))

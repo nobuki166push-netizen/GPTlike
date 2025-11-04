@@ -18,6 +18,12 @@ Azure Functions上で動作する高度なエージェンティックRAGシス�
 - **Azure Blob Storage**: ドキュメントの永続化と自動ロード
 - **FAISS ベクトルストア**: 高速な類似度検索
 
+### 🔐 セキュリティ
+- **Entra ID（Azure AD）認証**: エンタープライズグレードの認証（[セットアップガイド](ENTRA_AUTH_SETUP.md)）
+- **MSAL.js統合**: フロントエンドでのシームレスな認証体験
+- **JWT トークン検証**: バックエンドでの安全なAPI保護
+- **オン/オフ切り替え**: 開発環境では認証を無効化可能
+
 ### 🌐 API エンドポイント
 
 | エンドポイント | メソッド | 説明 |
@@ -468,22 +474,28 @@ system_prompt = """あなたのカスタムシステムプロンプト...
 /workspace/
 ├── function_app.py                # Azure Function エンドポイント定義
 ├── agent_rag.py                   # Microsoft Agent FrameworkベースのエージェンティックRAG実装
+├── auth.py                        # Entra ID認証とトークン検証
 ├── host.json                      # Azure Functions ランタイム設定
 ├── local.settings.json            # ローカル開発環境設定
 ├── requirements.txt               # Python依存関係
 ├── .env.template                  # 環境変数テンプレート
 ├── deploy.sh                      # デプロイスクリプト
 ├── staticwebapp.config.json       # 静的Webアプリ設定
-├── frontend/                      # Reactフロントエンド
-│   ├── src/
-│   │   ├── App.tsx               # メインアプリケーション
-│   │   ├── components/
-│   │   │   └── Chat.tsx          # チャットUI
-│   │   ├── api.ts                # APIクライアント
-│   │   └── types.ts              # TypeScript型定義
-│   ├── package.json
-│   └── vite.config.ts
-└── README.md                      # このファイル
+├── README.md                      # このファイル
+├── QUICKSTART.md                  # クイックスタートガイド
+├── ENTRA_AUTH_SETUP.md            # Entra ID認証セットアップガイド
+└── frontend/                      # Reactフロントエンド
+    ├── src/
+    │   ├── App.tsx                # メインアプリケーション（認証UI含む）
+    │   ├── main.tsx               # エントリーポイント（MSAL統合）
+    │   ├── authConfig.ts          # MSAL設定
+    │   ├── components/
+    │   │   └── Chat.tsx           # チャットUI
+    │   ├── api.ts                 # APIクライアント（トークン送信）
+    │   └── types.ts               # TypeScript型定義
+    ├── .env.example               # 環境変数の例
+    ├── package.json               # MSAL依存関係含む
+    └── vite.config.ts
 ```
 
 ## 🏗️ アーキテクチャ
@@ -516,9 +528,29 @@ system_prompt = """あなたのカスタムシステムプロンプト...
 
 ## 🔐 セキュリティ・ベストプラクティス
 
-### 認証
-- Function キー認証を必ず有効にする
-- 本番環境では Azure AD 認証の使用を推奨
+### Entra ID 認証（推奨）
+- **完全なセットアップガイド**: [ENTRA_AUTH_SETUP.md](ENTRA_AUTH_SETUP.md) を参照
+- 本番環境では Entra ID 認証を有効化してください
+- シングルサインオン（SSO）と統合可能
+- ロールベースアクセス制御（RBAC）をサポート
+
+### 認証の有効化
+
+```bash
+# local.settings.json（ローカル）
+"ENABLE_ENTRA_AUTH": "true"
+"ENTRA_TENANT_ID": "your-tenant-id"
+"ENTRA_CLIENT_ID": "your-api-client-id"
+
+# Azure Functions（本番）
+az functionapp config appsettings set \
+  --name gptlike-func-app \
+  --resource-group gptlike-rg \
+  --settings \
+  ENABLE_ENTRA_AUTH="true" \
+  ENTRA_TENANT_ID="your-tenant-id" \
+  ENTRA_CLIENT_ID="your-api-client-id"
+```
 
 ### APIキー管理
 - Azure Key Vault を使用してシークレットを管理
