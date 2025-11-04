@@ -6,11 +6,12 @@ Azure Functions上で動作する高度なエージェンティックRAGシス�
 
 ## ✨ 主な機能
 
-### 🎯 エージェンティックRAG
-- **Microsoft Agent Framework**: Microsoftの公式エージェントフレームワーク（[GitHub](https://github.com/microsoft/agent-framework)）
-- **OpenAI Function Calling**: ツールを自動選択して最適な回答を生成
-- **複数の検索ツール**: ベクトル検索（FAISS）、Azure AI Search統合
-- **インテリジェントな推論**: コンテキストを理解し、適切な情報を組み合わせて回答
+### 🎯 エージェンティックRAG - Router Agent パターン
+- **真のエージェント動作**: 質問の意図を自動分類し、最適なツールを選択（[詳細ガイド](ROUTER_AGENT_GUIDE.md)）
+- **7種類の意図分類**: 事実検索、意味検索、要約、比較、分析、複数ステップ推論など
+- **複数の専門ツール**: 意味検索、キーワード検索、要約、比較分析
+- **インテリジェントなルーティング**: 質問タイプに応じて最適な処理フローを自動選択
+- **ナレッジ検索に最適**: 社内文書、製品マニュアル、FAQ、技術ドキュメントに対応（[パターン比較](KNOWLEDGE_SEARCH_PATTERNS.md)）
 
 ### 🔌 Azure統合
 - **Azure OpenAI Service**: GPT-4による高度な自然言語処理
