@@ -18,7 +18,7 @@
   },
   {
     "name": "AZURE_AISEARCH_KEY",
-    "value": "lJNbWvfAmfgrkNYN24ec2vP55vPmptdmBNxVJ2ZuBwAzSeAIztEY"
+    "value": "YOUR_AZURE_SEARCH_KEY_HERE"
   },
   {
     "name": "AZURE_OPENAI_ENDPOINT",
@@ -26,7 +26,7 @@
   },
   {
     "name": "AZURE_OPENAI_KEY",
-    "value": "BFUuwI4vB7TDEteJnICCMILmOfcgQ7oJhxUV5ZSJi74nJ30po6xtJQQJ99BJACfhMk5XJ3w3AAABACOGJBw3"
+    "value": "YOUR_AZURE_OPENAI_KEY_HERE"
   },
   {
     "name": "AzureWebJobsStorage",
@@ -99,8 +99,7 @@
 
 ```
 名前: AZURE_OPENAI_API_KEY
-値: BFUuwI4vB7TDEteJnICCMILmOfcgQ7oJhxUV5ZSJi74nJ30po6xtJQQJ99BJACfhMk5XJ3w3AAABACOGJBw3
-（既存のAZURE_OPENAI_KEYの値をコピー）
+値: （既存のAZURE_OPENAI_KEYの値をコピー）
 
 名前: AZURE_OPENAI_API_VERSION
 値: 2024-02-15-preview
@@ -110,8 +109,7 @@
 （既存のAZURE_AISEARCH_ENDPOINTの値をコピー）
 
 名前: AZURE_SEARCH_KEY
-値: lJNbWvfAmfgrkNYN24ec2vP55vPmptdmBNxVJ2ZuBwAzSeAIztEY
-（既存のAZURE_AISEARCH_KEYの値をコピー）
+値: （既存のAZURE_AISEARCH_KEYの値をコピー）
 
 名前: AZURE_COSMOSDB_ENDPOINT
 値: （Cosmos DBアカウントのエンドポイント）
