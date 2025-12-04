@@ -1,0 +1,46 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "python",
+    "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
+    
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
+    
+    "AZURE_OPENAI_ENDPOINT": "",
+    "AZURE_OPENAI_API_KEY": "",
+    "AZURE_OPENAI_API_VERSION": "2024-02-15-preview",
+    "LLM_MODEL": "gpt-4o",
+    
+    "AZURE_SEARCH_ENDPOINT": "",
+    "AZURE_SEARCH_KEY": "",
+    "AZURE_SEARCH_INDEX_NAME": "default-index",
+    
+    "SEARCH_BASE_URL": "",
+    
+    "GRAPH_SEARCH_ENDPOINT": "",
+    "GRAPH_SEARCH_KEY": "",
+    
+    "AZURE_COSMOSDB_ENDPOINT": "",
+    "AZURE_COSMOSDB_KEY": "",
+    "COSMOS_DATABASE_NAME": "SearchLogs",
+    "COSMOS_CONTAINER_NAME": "ProcessLogs",
+    
+    "CHUNK_SIZE": "10",
+    "RELEVANCE_THRESHOLD": "0.3",
+    "FESS_SEARCH_LIMIT": "20",
+    "SEMANTIC_SEARCH_TOP": "20",
+    "GRAPH_SEARCH_LIMIT": "20",
+    "GRAPH_SEARCH_DEPTH": "2",
+    "FESS_PARALLEL_WORKERS": "3",
+    "MAX_EXPANDED_KEYWORDS": "3",
+    "SEARCH_TIMEOUT_SECONDS": "10",
+    "LIST_DISPLAY_LIMIT": "50",
+    "SEMANTIC_CONFIGURATION_NAME": "default",
+    "SEMANTIC_QUERY_LANGUAGE": "ja-JP",
+    
+    "LANGCHAIN_TRACING_V2": "false",
+    "LANGCHAIN_API_KEY": ""
+  }
+}
+
